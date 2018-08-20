@@ -1,0 +1,99 @@
+print('\033[1;36m{}'.format('===============Bem-vindo!===============').center(40))
+dic = {}
+while True:
+    esc = int(input('''\033[1;35mO que deseja: 
+[1] = Adicionar Cadastro.     
+[2] = Editar nome.          
+[3] = Editar idade.
+[4] = Apagar Cadastro.
+[5] = Inspecionar Cadastro.
+[6] = Sair
+ '''))
+    if esc == 1:
+        print('\033[1;36m{}'.format('=Adicionar Cadastro=').center(40))
+        while True:
+            nome = str(input('\033[1;33mNome:'))
+            if nome in dic:
+                print('\033[1;31mNome existente, escolha outro.')
+                continue
+            else:
+                break
+        idade = int(input("\033[1;33mIdade:"))
+        print('-' * 20)
+        dic.update({str(nome.title()): idade})
+        continue
+    elif esc == 2:
+        while True:
+            pnome = input('\033[1;36mQual o nome cadastrado? ').title()
+            if pnome in dic:
+                print('Oi {}, Tudo bem?!'.format(pnome))
+                while True:
+                    novonome = input('\033[1;36mDigite o nome que deseja:'.format(pnome)).title()
+                    if novonome in dic:
+                        print('\033[1;31mNome existente, escolha outro.')
+                        continue
+                    else:
+                        break
+                idadep = dic[pnome]
+                del dic[pnome]
+                dic.update({novonome: idadep})
+                print('\033[1;32mO seu novo nome cadastrado e {}'.format(novonome))
+                break
+            else:
+                print('\033[1;31mNome inexistente, digite novamente.')
+                continue
+    elif esc == 3:
+        while True:
+            pnome = input('\033[1;36mQual o nome cadastrado? ').title()
+            if pnome in dic:
+                print('Oi {}, Tudo bem?!'.format(pnome))
+                print('Vamos atualizar a sua idade...')
+                novaidade = int(input('\033[1;33mQuantos anos voce tem agora? '))
+                dic[pnome] = novaidade
+                print('\033[1;32mSua idade foi atualizada para {} anos'.format(novaidade))
+                break
+            else:
+                print('\033[1;31mNome inexistente, digite novamente.')
+                continue
+    elif esc == 4:
+           while True:
+            pnome = input('\033[1;36mQual o nome cadastrado? ').title()
+            if pnome in dic:
+                print('Oi {}, Tudo bem?!'.format(pnome))
+                print('Apagar Cadastro: ')
+                cer = int(input('[1]=Confirmar\n[2]=Cancelar\n'))
+                if cer == 1:
+                    del dic[pnome]
+                    print('\033[1;32mCadastro apagado com sucesso.')
+                    break
+                elif cer == 2:
+                    print('\033[1;32mAgradecemos a sua permanencia.')
+                    break
+            else:
+                print('\033[1;31mNome inexistente, digite novamente.')
+                continue
+    elif esc == 5:
+        while True:
+            pnome = input('\033[1;36mQual o nome cadastrado? ').title()
+            if pnome in dic:
+                print('Oi {}, Tudo bem?!'.format(pnome))
+                print('''\033[1;32m     Cadastro 
+Nome: {}
+Idade: {}'''.format(pnome, dic[pnome]))
+                break
+            else:
+                print('\033[1;31mNome inexistente, digite novamente.')
+                continue
+    elif esc == 6:
+        sair = int(input('''\033[1;34mDeseja fechar o programa:
+[1] = sim
+[2] = Nao
+'''))
+        if sair == 1:
+            print('\033[1;33mAte mais.')
+            break
+        else:
+            continue
+
+
+
