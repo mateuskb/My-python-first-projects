@@ -1,0 +1,48 @@
+print('\033[1;36m=+' * 25)
+print('Vamos jogar Par ou Impar'.center(50, ' '))
+print('+=' * 25)
+import time
+import random
+cont = 0
+while True:
+    user = str(input('\33[1;34mComputador: "Par ou impar?" ')).strip().lower().capitalize()
+    if user == 'Par':
+        fala = 'Impar'
+    elif user == 'Impar':
+        fala = 'Par'
+    else:
+        print('\033[1;31mOpcao invalida, tente novamente')
+        continue
+    time.sleep(0.2)
+    print(f'\33[1;34mComputador: "Eu escolho {fala}"')
+    time.sleep(0.2)
+    num = int(input('\033[1;34mComputador: "Escolha um numero:" '))
+    comp = random.randint(1, 10)
+    print(f'Computador: "Eu escolho {comp}"')
+    soma = comp + num
+    if soma % 2 == 0:
+        soma = 'Par'
+    else:
+        soma = 'Impar'
+    time.sleep(0.2)
+    print('\033[1;35mPar')
+    time.sleep(0.5)
+    print('ou')
+    time.sleep(0.5)
+    print('Impar')
+    time.sleep(0.5)
+    if soma == user:
+        print('\033[1;34mComputador: \033[1;32m"PARABENS, voce me venceu... :)"')
+        cont += 1
+    else:
+        print('\033[1;34mComputador: \033[1;31m"Sabia que eu ia ganhar.')
+    time.sleep(1)
+    tent = input('\033[1;34mComputador:\033[1;36m "Deseja tentar novamente?" [S = sim] [ N = Nao] ').strip().upper()
+    if tent == 'S':
+        continue
+    elif tent == 'N':
+        print('\033[1;34mComputador: \033[1;36m"GAME OVER"')
+        print('\033[1;34mComputador: \033[1;36m"Voce me venceu {} vez(es)"'.format(cont))
+        break
+    else:
+        print('\033[1;31mOpcao invalida.')
