@@ -1,0 +1,32 @@
+print('\033[1;34m*-*' * 10)
+print('\033[1;34mConversor de números!!!')
+print('-*-' * 10)
+while True:
+    num = int(input('\033[1;32mEscolha um valor inteiro para a conversão : '))
+    print('''\033[1;32mPara qual unidade você deseja converter :
+     [1] - Binário
+     [2] - octal
+     [3] - Hexadecimal''')
+    opc = int(input('\033[1;32mSua opção : '))
+    if opc == 1:
+        print('\033[1;36mO número inteiro {} em Binário e {}'.format(num, bin(num)[2:]))
+    elif opc == 2:
+        print('\033[1;36mO número inteiro {} em Octal e {}'.format(num, oct(num)[2:]))
+    elif opc == 3:
+        print('\033[1;36mO número inteiro {} em hexadecimal e {}'.format(num, hex(num)[2:]))
+    else:
+        print('\033[31mOpção inválida, escolha outra...')
+        continue
+    volta = int(input("""\033[1;34mDeseja Tentar novamente ? 
+    [1] - Sim
+    [2] - Não
+    """))
+    if volta == 1:
+        print('\033[1;32mLá vamos nós mais uma vez...')
+        continue
+    elif volta == 2:
+        print('\033[1;34mAté a próxima :)')
+        break
+    else:
+        print('\033[1;31mVou entender isso como um tchau.')
+        break
