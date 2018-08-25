@@ -1,0 +1,76 @@
+import random
+import time
+while True:
+    print('\033[1;34m-=+=-'*11)
+    print('\033[1;32m                Pedra-Papel-Tesoura')
+    esc = int(input('''\033[1;34m
+[1] = Pedra
+[2] = Papel
+[3] = Tesoura
+ '''))
+    print('\033[1;34m-=+=-'*11)
+    print('\033[1;36mJO')
+    time.sleep(0.5)
+    print('KEN')
+    time.sleep(0.5)
+    print('PO')
+    time.sleep(0.5)
+    possibilidade = ['Pedra', 'Papel', 'Tesoura']
+    numero = random.choice(possibilidade)
+    if esc == 1:
+        esc1 = 'Pedra'
+    elif esc == 2:
+        esc1 = 'Papel'
+    elif esc == 3:
+        esc1 = 'Tesoura'
+    else:
+        print('\033[1;31mMALS, mas so pode escolher entre 1, 2 ou 3')
+        print('=-'+ '-=+=-'*4, '-=+FIM+=-', '-=+=-'*4 + '=-')
+        tent = int(input('''\033[1;35mDeseja Tentar novamente?
+[1] Sim 
+[2] Nao
+ '''))
+        if tent == 1:
+            continue
+        elif tent == 2:
+            print('\033[1;35mBye Bye')
+            break
+    'Pedra' > 'Tesoura'
+    'Papel' > 'Pedra'
+    if esc1 == 'Papel' and numero == 'Tesoura':
+        print('''\033[1;31m-=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=-
+O computador escolheu {}.
+Voce escolheu {}.
+Perdeuuuuuu...'''.format(numero, esc1))
+    elif esc1 == 'Tesoura' and numero == 'Papel':
+        print('''\033[1;32m-=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=-
+ O computador escolheu {}.
+Voce escolheu {}.
+PARABENS, voce venceu...'''.format(numero, esc1))
+    elif esc1 < numero:
+        print('''\033[1;32m-=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=-
+O computador escolheu {}.
+Voce escolheu {}.
+PARABENS, voce venceu...'''.format(numero, esc1))
+    elif esc1 == numero:
+        print('''\033[1;33mO computador escolheu {}.
+Voce escolheu {}.
+Acho que foi empate, em !?'''.format(numero, esc1))
+    else:
+        print('''\033[1;31m-=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=--=+=-
+O computador escolheu {}.
+Voce escolheu {}.
+Perdeuuuuuu...'''.format(numero, esc1))
+    print('\033[1;34m=-'+ '-=+=-'*4, '-=+FIM+=-', '-=+=-'*4 + '=-')
+    tent = int(input('''\033[1;35mDeseja Tentar novamente?
+[1] Sim 
+[2] Nao
+ '''))
+    if tent == 1:
+        continue
+    elif tent == 2:
+        print('\033[1;35mBye Bye')
+        break
+    else:
+        print('Vou interpretar isso como um TCHAU...')
+        break
