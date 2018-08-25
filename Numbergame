@@ -1,0 +1,31 @@
+from random import choice,random
+from time import sleep
+print('\033[34m=-' * 35)
+print('Estou pensando em um número entre 0 e 10. Tente adivinhar...')
+print('-=' * 35)
+while True:
+    numero = choice([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    esc = int(input('\033[34mQual número eu pensei??? '))
+    print('\033[35mPROCESSANDO...')
+    sleep(1.3)
+    if esc == numero:
+        print('\033[32mPARABÉNS, você me venceu.\033[m')
+    else:
+        print('\033[31mTente outra vez, LOOSEER. O número escolhido era {}.\033[m'.format(numero))
+    sleep(0.4)
+    rein = str(input('''\033[32mDeseja tentar novamente? 
+    Digite 1 para sim
+    Digite 2 para não\033[m
+    '''))
+    if rein == '1':
+        sleep(1)
+        print('\033[34m-=' * 35)
+        print('Vamos tentar de novo??? Já estou cansado, mas já que você insiste...')
+        print('-=' * 35)
+        continue
+    elif rein == '2':
+        print('\033[34mBye Bye...')
+        break
+    else:
+        print('\33[31mNão sabe responder só 1 ou 2 ?! \nEntão tchau também... :( ')
+        break
