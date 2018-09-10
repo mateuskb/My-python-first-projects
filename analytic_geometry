@@ -1,0 +1,118 @@
+import math
+
+def Find_point():
+    for c in range(1):
+        Eixo_X = int(input('X axis of point {}: '.format(pontos[c])))
+        Eixo_Y = int(input('Y axis of point {}: '.format(pontos[c])))
+        lista.append([Eixo_X, Eixo_Y])
+
+
+def Find_2points():
+    for c in range(2):
+        Eixo_X = int(input('X axis of point {}: '.format(pontos[c])))
+        Eixo_Y = int(input('Y axis of point {}: '.format(pontos[c])))
+        lista.append([Eixo_X, Eixo_Y])
+
+
+def Find_3points():
+    for c in range(3):
+        Eixo_X = int(input('X axis of point {}: '.format(pontos[c])))
+        Eixo_Y = int(input('Y axis of point {}: '.format(pontos[c])))
+        lista.append([Eixo_X, Eixo_Y])
+
+
+def Find_function():
+    for l in range(1):
+        print('Function example: r = aX + bY + c')
+        a_value = int(input('a : '))
+        b_value = int(input('b : '))
+        c_value = int(input('c : '))
+        lista_funcao.append([a_value, b_value, c_value])
+
+
+while True:
+    restaurador = True
+    print('\033[1;36m-' * 10, 'Analitic Math', '-' * 10)
+    opcoes1 = int(input('''What do you want to do:
+    [1] Distance
+    [2] Medium point
+    [3] Tangent of the angle
+    [4] Function
+    [5] Height of a Triangle
+    [6] Area of a Triangle
+    [0] Break
+    \033[m'''))
+    pontos = ['A', 'B', 'C']
+    lista = []
+    lista_funcao = []
+
+    if opcoes1 == 1:
+        Find_2points()
+        pointA = lista[0]
+        pointB = lista[1]
+        distance = math.sqrt((pointA[0] - pointB[0]) ** 2 + (pointA[1] - pointB[1]) ** 2)
+        print('The distance between A and B is {:.2f}'.format(distance))
+        print('\033[1;35m-\033[m' * 35)
+        continue
+    elif opcoes1 == 2:
+        Find_2points()
+        pointA = lista[0]
+        pointB = lista[1]
+        medioX = (pointA[0] + pointB[0]) / 2
+        medioY = (pointA[1] + pointB[1]) / 2
+        ponto_medio = [medioX, medioY]
+        print('The medium point between A and B is {}'.format(ponto_medio))
+        print('\033[1;35m-\033[m' * 35)
+        continue
+    elif opcoes1 == 3:
+        Find_2points()
+        pointA = lista[0]
+        pointB = lista[1]
+        if (pointA[0] - pointB[0]) != 0:
+            m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0])
+            if m == 0:
+                print('The tangent of the angle is 0')
+            else:
+                print('The tangent of the angle is {:.2f}'.format(m))
+        else:
+            print('The tangent is infinite.')
+        print('\033[1;35m-\033[m' *35)
+        continue
+    elif opcoes1 == 4:
+        Find_2points()
+        pointA = lista[0]
+        pointB = lista[1]
+        if (pointA[0] - pointB[0]) != 0:
+            m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0])
+            if (-pointA[0]) * m + pointA[1] > 0:
+                print('Y =', m, 'X +', (-pointA[0]) * m + pointA[1])
+            elif (-pointA[0]) * m + pointA[1] < 0:
+                print('Y =', m, 'X -', (-pointA[0]) * m + pointA[1])
+            else:
+                print('Y =', m, 'X', (-pointA[0]) * m + pointA[1])
+        else:
+            print('The function is X = {}'.format(pointA[0]))
+        print('\033[1;35m-\033[m'*35)
+        continue
+    elif opcoes1 == 5:
+        Find_point()
+        Find_function()
+        pointAX = lista[0][0]
+        pointAY = lista[0][1]
+        a_value = lista_funcao[0][0]
+        b_value = lista_funcao[0][1]
+        c_value = lista_funcao[0][2]
+        distancia = (abs(a_value * pointAX + b_value * pointAY + c_value))/math.sqrt(a_value**2 + b_value**2)
+        print('The distance from the point to the line is {}'.format(distancia))
+    elif opcoes1 == 6:
+        Find_3points()
+        pointA = lista[0]
+        pointB = lista[1]
+        pointC = lista[2]
+        Area_T = (-(pointC[0]*pointB[1]) - (pointA[0]*pointB[1]) - (pointB[0]*pointA[1]) + pointA[0]*pointB[1] + pointA[1]*pointC[0] + pointB[0]*pointC[1])/2
+        if Area_T < 0:
+            Area_T = -Area_T
+        print('The area of the Triangle is {}'.format(Area_T))
+    elif opcoes1 == 0:
+        print('\033[1;36mMuito obrigado')
+        break
