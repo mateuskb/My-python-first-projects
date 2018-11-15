@@ -22,6 +22,8 @@ def button_1():
     label_start.pack(side='top')
     button_start.pack(side='top')
 
+def button_exit():
+    sys.exit()
 
 def button_2():
     global difficulty
@@ -67,6 +69,7 @@ button_times_1 = tkinter.Button(main_window, text='10 Times', bg='Steelblue1', p
 button_times_2 = tkinter.Button(main_window, text='30 Times', bg='green', padx='15', pady='5', command=button_2)
 button_times_3 = tkinter.Button(main_window, text='50 Times', bg='red', padx='15', pady='5', command=button_3)
 button_start = tkinter.Button(main_window, text='Start', padx='15', pady='5', command=button_start)
+button_exit = tkinter.Button(main_window, text='Exit', padx='15', pady='5', bg='red3', command=button_exit)
 
 # Packing main_window
 label_inicial.pack(side='top')
@@ -74,6 +77,7 @@ label_question.pack(side='top')
 button_times_1.pack(side='top')
 button_times_2.pack(side='top')
 button_times_3.pack(side='top')
+button_exit.pack(side='bottom')
 
 # Definindo loop da janela tkinter
 main_window.mainloop()
