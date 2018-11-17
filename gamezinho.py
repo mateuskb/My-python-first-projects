@@ -8,6 +8,23 @@ import sys
 hd_definition = '1280x720-300+100'
 full_hd_definition = '1920x1080'
 
+# Criando ou abrindo record_file
+
+try:
+    record_file = open('record.txt', 'r')
+    record_lines = record_file.readlines()
+    record_file.close()
+
+except:
+    record_file = open('record.txt', 'w')
+    record_file.write('''0
+0
+0''')
+    record_file.close()
+    record_file = open('record.txt', 'r')
+    record_lines = record_file.readlines()
+    record_file.close()
+
 
 # Funcoes-Botoes
 
@@ -22,8 +39,10 @@ def button_1():
     label_start.pack(side='top')
     button_start.pack(side='top')
 
+
 def button_exit():
     sys.exit()
+
 
 def button_2():
     global difficulty
@@ -50,7 +69,7 @@ def button_start():
 init_game = 0
 difficulty = 0
 
-###main_window
+# main_window
 
 
 # Criando janela
@@ -92,9 +111,9 @@ game_window.title('Game')
 # definindo variaveis - jogo
 time_inicial = time.time()
 lados = ['left', 'top', 'right', 'bottom']
-clicks = difficulty * 20 - 10  # definindo numero de clicks no jogo
-contagem = 1
-record = 0
+clicks = (difficulty * 20 - 10)  # definindo numero de clicks no jogo
+contagem = 0
+record = float(record_lines[difficulty - 1])
 
 
 # definindo funções - jogo
@@ -108,22 +127,37 @@ def restart():
     os.execl(python, python, *sys.argv)
 
 
+def exit_game():
+    sys.exit()
+
+
 def stop():
-    label_finished = tkinter.Label(text='Congrats... Yout time : {:.2f} sec'.format(record), fg="light green",
-                                   font="Verdana 20 bold").pack(side='top')
     button_game.config(text='Restart', bg='green', fg='black', command=restart)
-    button_game.config(button_game.pack(side='top'))
+    button_game.config(button_game.pack(side='bottom'))
+    button_exit_game = tkinter.Button(game_window, text='Exit', bg='red3', padx='15', pady='5',
+                                      command=exit_game).pack(side='bottom')
 
 
 def finished():  # definindo o ultimo clique
     finish_time = time.time()
     game_time = finish_time - time_inicial  # verificando tempo de jogo
+    label_finished = tkinter.Label(text='Congrats... Yout time : {:.2f} sec'.format(game_time), fg="light green",
+                                   font="Verdana 20 bold").pack(side='top')
 
     def record_func():
-        global record
-        record = game_time
-        label_record.config(text=('Record = {:.2f}seg'.format(record)))
+        label_record.config(text=('Record = {:.2f}seg'.format(game_time)))
 
+    global record
+    if game_time <= record or record == 0:
+        # record = game_time
+        if difficulty == 1:
+            record_lines[difficulty - 1] = str('{:.2f}\n'.format(game_time))
+        if difficulty == 2:
+            record_lines[difficulty - 1] = str('{:.2f}\n'.format(game_time))
+        if difficulty == 3:
+            record_lines[difficulty - 1] = str('{:.2f}'.format(game_time))
+        with open('record.txt', 'w') as file:
+            file.writelines(record_lines)
     record_func()
     stop()
 
@@ -146,7 +180,7 @@ label_record = tkinter.Label(game_window, text='Record = {:.2f} sec'.format(reco
 
 # packing
 label_contagem.pack(side='top')
-#label_record.pack(side='bottom')
+label_record.pack(side='bottom')
 
 # definir botão
 button_game = tkinter.Button(game_window, text='Click here!', padx='15', pady='5', bg='grey68',
