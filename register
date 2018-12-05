@@ -76,20 +76,28 @@ if create == 1:
         os.execl(python, python, *sys.argv)
 
     def verify():
+        a = 0
         if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', entry_email.get()) is None:
             label_invalid_email.pack(side='bottom')
-        if entry_name.get() == '':
-            label_invalid_name.pack(side='bottom')
-        if entry_key.get() == '':
-            label_invalid_key.pack(side='bottom')
-        if entry_age.get() == '':
-            label_invalid_age.pack(side='bottom')
-
         else:
             label_invalid_email.pack_forget()
+            a += 1
+        if entry_name.get() == '':
+            label_invalid_name.pack(side='bottom')
+        else:
             label_invalid_name.pack_forget()
-            label_invalid_age.pack_forget()
+            a += 1
+        if '-' in entry_key.get() or entry_key.get() == '':
+            label_invalid_key.pack(side='bottom')
+        else:
             label_invalid_key.pack_forget()
+            a += 1
+        if entry_age.get().isnumeric() is False or entry_age == '':
+            label_invalid_age.pack(side='bottom')
+        else:
+            label_invalid_age.pack_forget()
+            a += 1
+        if a == 4:
             label_create.config(fg='green', text='User successfully register!')
             label_space.pack_forget()
             label_name.pack_forget()
@@ -122,8 +130,8 @@ if create == 1:
     label_space = tkinter.Label(root_create, text='')
     label_invalid_email = tkinter.Label(root_create, fg='red', text='Invalid e-mail!!!')
     label_invalid_name = tkinter.Label(root_create, fg='red', text='Please enter you name!!!')
-    label_invalid_age = tkinter.Label(root_create, fg='red', text='please enter your age!!!')
-    label_invalid_key = tkinter.Label(root_create, fg='red', text='Please enter a password!!!')
+    label_invalid_age = tkinter.Label(root_create, fg='red', text='Invalid Age!!!')
+    label_invalid_key = tkinter.Label(root_create, fg='red', text='Invalid password!!!')
 
     # Entrys
     entry_name = tkinter.Entry(root_create)
@@ -162,11 +170,30 @@ elif check == 1:
     # Functions
     def login():
         lines = open('accounts.txt', 'r').readlines()
-        lines_str = ''
         for line in lines:
-            lines_str += line
-        if entry_log_email.get() in lines_str:
-            pass
+            if entry_log_email.get() in line:
+                key = line.strip('\n').split('-')[3]
+        if key == entry_log_key.get():
+            authorized()
+
+
+    def authorized():
+        lines = open('accounts.txt', 'r').readlines()
+        for line in lines:
+            if entry_log_email.get() in line:
+                name = line.strip('\n').split('-')[0]
+                age = line.strip('\n').split('-')[1]
+                email = line.strip('\n').split('-')[2]
+        label_log.config(text='Welcome!!!')
+        label_space.pack_forget()
+        label_log_email.pack_forget()
+        entry_log_email.pack_forget()
+        label_log_key.pack_forget()
+        entry_log_key.pack_forget()
+        logged_name = tkinter.Label(text=f'Name = {name}').pack()
+        logged_age = tkinter.Label(text=f'Age = {age}').pack()
+        logged_email = tkinter.Label(text=f'E-mail = {email}').pack()
+        button_log_submit.config(text='Home!', command=restart)
 
     # Labels
     label_log = tkinter.Label(root_check, text='Log In')
