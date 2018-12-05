@@ -1,6 +1,7 @@
 import os
 import sys
 import tkinter
+import re
 
 # Variables
 create = 0
@@ -11,19 +12,20 @@ root_start = tkinter.Tk()
 root_start.geometry('200x300')
 
 # Config file
+
 try:
     with open('accounts.txt', 'r') as file:
         lines = file.readlines()
 
 except:
     with open('accounts.txt', 'w') as file:
+
         file.write('Accounts\n')
     with open('accounts.txt', 'r') as file:
         lines = file.readlines()
 
 
 # Functions
-
 def new_account():
     destroy()
     global create
@@ -38,7 +40,6 @@ def check_account():
 
 def restart():
     python = sys.executable
-
     os.execl(python, python, *sys.argv)
 
 
@@ -51,7 +52,7 @@ label_welcome = tkinter.Label(root_start, text='Welcome\nAccounts centre!!')
 
 # Buttons
 button_new_account = tkinter.Button(root_start, text='Create new account!', command=new_account)
-button_check = tkinter.Button(root_start, text='Check your account!', command=check_account)
+button_check = tkinter.Button(root_start, text='Log in!', command=check_account)
 
 # Pack
 label_welcome.pack(side='top')
@@ -67,11 +68,127 @@ root_start.mainloop()
 if create == 1:
     root_create = tkinter.Tk()
     root_create.title('Create account!')
-    root_create.geometry('400x500')
+    root_create.geometry('300x320')
+
+    # function
+    def restart():
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
+
+    def verify():
+        if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', entry_email.get()) is None:
+            label_invalid_email.pack(side='bottom')
+        if entry_name.get() == '':
+            label_invalid_name.pack(side='bottom')
+        if entry_key.get() == '':
+            label_invalid_key.pack(side='bottom')
+        if entry_age.get() == '':
+            label_invalid_age.pack(side='bottom')
+
+        else:
+            label_invalid_email.pack_forget()
+            label_invalid_name.pack_forget()
+            label_invalid_age.pack_forget()
+            label_invalid_key.pack_forget()
+            label_create.config(fg='green', text='User successfully register!')
+            label_space.pack_forget()
+            label_name.pack_forget()
+            entry_name.pack_forget()
+            label_age.pack_forget()
+            entry_age.pack_forget()
+            label_email.pack_forget()
+            entry_email.pack_forget()
+            label_key.pack_forget()
+            entry_key.pack_forget()
+            button_submit.config(text='Home', command=restart)
+            button_submit.pack(side='top')
+            submit()
+
+    def submit():
+        perfil = f'{entry_name.get()}-{entry_age.get()}-{entry_email.get()}-{entry_key.get()}\n'
+        file = open('accounts.txt', 'w')
+        lines_str = ''
+        for line in lines:
+            lines_str += line
+        file.writelines(lines_str + perfil)
+
+
+    # Labels
+    label_create = tkinter.Label(root_create, text='Create new account : ')
+    label_name = tkinter.Label(root_create, text='Nick: ')
+    label_age = tkinter.Label(root_create, text='Age: ')
+    label_email = tkinter.Label(root_create, text='E-mail: ')
+    label_key = tkinter.Label(root_create, text='Password: ')
+    label_space = tkinter.Label(root_create, text='')
+    label_invalid_email = tkinter.Label(root_create, fg='red', text='Invalid e-mail!!!')
+    label_invalid_name = tkinter.Label(root_create, fg='red', text='Please enter you name!!!')
+    label_invalid_age = tkinter.Label(root_create, fg='red', text='please enter your age!!!')
+    label_invalid_key = tkinter.Label(root_create, fg='red', text='Please enter a password!!!')
+
+    # Entrys
+    entry_name = tkinter.Entry(root_create)
+    entry_age = tkinter.Entry(root_create)
+    entry_email = tkinter.Entry(root_create)
+    entry_key = tkinter.Entry(root_create, show='•')
+
+
+    # Buttoms
+    button_submit = tkinter.Button(root_create, text='Submit!', fg='white', bg='black', command=verify)
+
+
+    # Pack
+    label_create.pack()
+    label_space.pack()
+    label_name.pack()
+    entry_name.pack()
+    label_age.pack()
+    entry_age.pack()
+    label_email.pack()
+    entry_email.pack()
+    label_key.pack()
+    entry_key.pack()
+    button_submit.pack(side='bottom')
+
+
+
+    # Loop window
     root_create.mainloop()
 
 elif check == 1:
     root_check = tkinter.Tk()
     root_check.title('Check account!')
-    root_check.geometry('400x400')
+    root_check.geometry('300x320')
+
+    # Functions
+    def login():
+        lines = open('accounts.txt', 'r').readlines()
+        lines_str = ''
+        for line in lines:
+            lines_str += line
+        if entry_log_email.get() in lines_str:
+            pass
+
+    # Labels
+    label_log = tkinter.Label(root_check, text='Log In')
+    label_log_email = tkinter.Label(root_check, text='Your e-mail: ')
+    label_log_key = tkinter.Label(root_check, text='Password: ')
+    label_space = tkinter.Label(root_check, text='')
+
+    # Entry
+    entry_log_email = tkinter.Entry(root_check)
+    entry_log_key = tkinter.Entry(root_check, show='•')
+
+    # Button
+    button_log_submit = tkinter.Button(root_check, bg='black', fg='white', text='Submit', command=login)
+
+    # Pack
+    label_log.pack()
+    label_space.pack()
+    label_log_email.pack()
+    entry_log_email.pack()
+    label_log_key.pack()
+    entry_log_key.pack()
+    button_log_submit.pack(side='bottom')
+
+    # Loop window
     root_check.mainloop()
