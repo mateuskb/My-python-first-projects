@@ -1,0 +1,77 @@
+import os
+import sys
+import tkinter
+
+# Variables
+create = 0
+check = 0
+
+# Creating and config window
+root_start = tkinter.Tk()
+root_start.geometry('200x300')
+
+# Config file
+try:
+    with open('accounts.txt', 'r') as file:
+        lines = file.readlines()
+
+except:
+    with open('accounts.txt', 'w') as file:
+        file.write('Accounts\n')
+    with open('accounts.txt', 'r') as file:
+        lines = file.readlines()
+
+
+# Functions
+
+def new_account():
+    destroy()
+    global create
+    create += 1
+
+
+def check_account():
+    destroy()
+    global check
+    check += 1
+
+
+def restart():
+    python = sys.executable
+
+    os.execl(python, python, *sys.argv)
+
+
+def destroy():
+    root_start.destroy()
+
+
+# Label
+label_welcome = tkinter.Label(root_start, text='Welcome\nAccounts centre!!')
+
+# Buttons
+button_new_account = tkinter.Button(root_start, text='Create new account!', command=new_account)
+button_check = tkinter.Button(root_start, text='Check your account!', command=check_account)
+
+# Pack
+label_welcome.pack(side='top')
+tkinter.Label(root_start, text='').pack()
+button_new_account.pack()
+tkinter.Label(root_start, text='').pack()
+button_check.pack()
+
+# Loop window
+root_start.mainloop()
+
+# Creating window to create account
+if create == 1:
+    root_create = tkinter.Tk()
+    root_create.title('Create account!')
+    root_create.geometry('400x500')
+    root_create.mainloop()
+
+elif check == 1:
+    root_check = tkinter.Tk()
+    root_check.title('Check account!')
+    root_check.geometry('400x400')
+    root_check.mainloop()
