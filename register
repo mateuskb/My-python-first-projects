@@ -10,6 +10,7 @@ check = 0
 # Creating and config window
 root_start = tkinter.Tk()
 root_start.geometry('200x300')
+root_start.title('Home')
 
 # Config file
 
