@@ -1,0 +1,172 @@
+import tkinter
+from tkinter import filedialog
+from PIL import Image, ImageDraw, ImageTk
+
+window = tkinter.Tk()
+window.minsize('300', '300')
+window.iconbitmap('pincel.ico')
+window.title('KB Paint')
+width_mouse = 2
+event = 0
+colour_pointer = 'Black'
+fileName = ''
+white = (255, 255, 255)
+
+
+def newFile():
+    global fileName
+    global canvas
+
+    def file_name():
+        global fileName
+        global height
+        global width
+        fileName = entry.get()+'.jpg'
+        frame.destroy()
+        size_change()
+
+    menu.entryconfigure('Edit', state=tkinter.NORMAL)
+    file_menu.entryconfigure('Save File', state=tkinter.NORMAL)
+    frame = tkinter.Frame(window)
+    frame.configure(border=2, relief='groove', bg='grey')
+    frame.grid(row=0, column=0, rowspan=3, columnspan=3)
+    label = tkinter.Label(frame, text='File name : ', bg='grey')
+    label.grid(row=0, column=0, sticky='w')
+    entry = tkinter.Entry(frame)
+    entry.grid(row=0, column=1, sticky='w')
+    button = tkinter.Button(frame, text='Set File Name', command=file_name)
+    button.grid(row=1, column=1, sticky='w')
+
+
+def openFile():
+    menu.entryconfigure('Edit', state=tkinter.NORMAL)
+    file_menu.entryconfigure('Save File', state=tkinter.NORMAL)
+    file = filedialog.askopenfilename(title="Select file", filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
+    if not file:
+        pass
+    if file:
+        image = Image.open(file)
+        width, height = image.size
+        canvas['height'] = height
+        canvas['width'] = width
+        canvas.image = ImageTk.PhotoImage(image)
+        canvas.create_image(0, 0, image=canvas.image, anchor='nw')
+
+
+def saveFile(event):
+    global fileName
+    global image
+    file = filedialog.asksaveasfile(mode='w', title="Save file", filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")),
+                                    initialfile=fileName)
+    image.convert('RGBA')
+    image.save(file, 'JPEG', mode='RGB')
+
+
+def size_change():
+    global height
+    global width
+
+    def size_set():
+        if entry_width.get() and entry_height.get() != '':
+            height = entry_height.get()
+            width = entry_width.get()
+            canvas['height'] = height
+            canvas['width'] = width
+            frame.destroy()
+            window.geometry(f'{width}x{height}')
+            globals()['image'] = Image.new("RGB", (int(width), int(height)), white)
+            globals()['draw'] = ImageDraw.Draw(image)
+
+    frame = tkinter.Frame(window)
+    frame.grid(row=0, column=0, rowspan=4, columnspan=3, padx=3, pady=3)
+    frame.config(border=2, relief='groove', bg='Grey')
+    label_height = tkinter.Label(frame, text='Height: [px]', bg='Grey')
+    label_height.grid(row=0, column=0, sticky='w')
+    entry_height = tkinter.Entry(frame)
+    entry_height.grid(row=0, column=1, padx=3)
+    label_width = tkinter.Label(frame, text='Width: [px]', bg='Grey')
+    label_width.grid(row=1, column=0, sticky='w')
+    entry_width = tkinter.Entry(frame)
+    entry_width.grid(row=1, column=1, padx=3)
+    button_size = tkinter.Button(frame, text='Apply Changes', command=size_set)
+    button_size.grid(row=2, column=1, sticky='w', padx=3, pady=2)
+
+
+def widthEdit():  # Create frame for both
+    global width_mouse
+    global text_var
+
+    def submit():
+        global width_mouse
+        global text_var
+        if entry_width.get().isnumeric():
+            if int(entry_width.get()) > 0:
+                width_mouse = int(entry_width.get())
+                frame.destroy()
+            else:
+                text_var.set('Number has to be >1')
+        else:
+            text_var.set('Please enter a number')
+
+    text_var = tkinter.StringVar()
+    text_var.set(' Number > 1')
+    frame = tkinter.Frame(window)
+    frame.grid(row=0, column=0, rowspan=3, columnspan=3, padx=3, pady=3)
+    frame.config(border=2, relief='groove', bg='Grey')
+    label_width = tkinter.Label(frame, text='Pointer Width : ', bg='Grey')
+    label_width.grid(row=0, column=0)
+    entry_width = tkinter.Entry(frame, textvariable=text_var)
+    entry_width.grid(row=0, column=1, sticky='w', padx=3)
+    button_submit = tkinter.Button(frame, text='Submit', command=submit)
+    button_submit.grid(row=1, column=1, sticky='w', padx=3, pady=2)
+
+
+def colour_command(choosed):
+    global colour_pointer
+    colour_pointer = choosed
+
+
+def mouse1(event):
+    global draw
+    canvas.create_oval(event.x, event.y, event.x + 1, event.y + 1, width=width_mouse, outline=colour_pointer)
+    draw.line([event.x, event.y, event.x + 1, event.y + 1], fill=colour_pointer, width=5)
+
+
+def mouse2(event):
+    pass
+
+
+height = 0
+width = 0
+colours = ['Blue', 'Light Blue', 'Red', 'Yellow', 'Black', 'White', 'Orange', 'Grey', 'Purple', 'Green', 'Pink']
+
+menu = tkinter.Menu(window)
+window.config(menu=menu)
+
+canvas = tkinter.Canvas(window, width=width, height=height, bg='White')
+canvas.grid(row=0, column=0, columnspan=30)
+canvas.bind('<B1-Motion>', mouse1)
+canvas.bind('<B3-Motion>', mouse2)
+
+file_menu = tkinter.Menu(menu, tearoff=0)
+edit_menu = tkinter.Menu(menu, tearoff=0)
+colours_menu = tkinter.Menu(menu, tearoff=0)
+
+menu.add_cascade(label='File', menu=file_menu)
+menu.add_cascade(label='Edit', menu=edit_menu, state=tkinter.DISABLED)
+menu.add_cascade(label='Colours', menu=colours_menu)
+
+new_file = file_menu.add_command(label='New File...', command=newFile)
+open_file = file_menu.add_command(label='Open File...', command=openFile)
+save_file = file_menu.add_command(label='Save File', command=lambda: saveFile(event), accelerator='Ctrl+"S"',
+                                  state=tkinter.DISABLED)
+window.bind('<Control-s>', saveFile)
+
+width_edit = edit_menu.add_command(label='Edit Width', command=widthEdit)
+
+colour_command_list = []
+
+for colour in colours:
+    colour_command_list.append(
+        colours_menu.add_command(label=colour, command=lambda colour=colour: colour_command(colour)))
+window.mainloop()
