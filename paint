@@ -138,7 +138,7 @@ def mouse2(event):
 
 height = 0
 width = 0
-colours = ['Blue', 'Light Blue', 'Red', 'Yellow', 'Black', 'White', 'Orange', 'Grey', 'Purple', 'Green', 'Pink']
+colours = ['Blue', 'Red', 'Yellow', 'Black', 'White', 'Orange', 'Grey', 'Purple', 'Green', 'Pink']
 
 menu = tkinter.Menu(window)
 window.config(menu=menu)
